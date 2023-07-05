@@ -3,8 +3,8 @@ import Nav from '@components/Nav';
 import Provider from '@components/Provider';
 
 export const medatada = {
-    title:"Randal coto",
-    description: "Discover & Share AI Prompts"
+    title:"Cratosoft Comparador de Precios",
+    description: "Compara precios entre productos y servicios de Costa Rica"
 }
 
 const RootLayout = ({children}) => {

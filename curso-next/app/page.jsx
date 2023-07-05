@@ -1,19 +1,18 @@
-import Feed from '@components/Feed';
-
+"use client";
+import Link from "next/link";
 const Home = () => {
   return (
     <section className="w-full flex-center flex-col">
         <h1 className="head_text text-center">
-            discover en Share
-            <br className="max-md:hidden"/>
-            <span className="orange_gradient text-center">AI-Powered Prompts</span>
+            Busca y compara
+            <br />
+            <span className="orange_gradient text-center">Productos y Servicios</span>
         </h1>
         <p className="desc text-center">
-            prontopia ias as asfhsf dsfhsdf sdhfdsf hdfshfg
-            hdfjhjsf
-            sdfjdfh sdfjhsdf sdjfsdjfh 
+            Cratosoft Price Comparator, te ayuda en la búsqueda de la mejor opción para obtener tu producto o servicio Soñado.
+            Solamente define los parámetros de búsqueda y te mostraremos las mejores opciones.
         </p>
-        <Feed />
+        <Link href="/search" className="black_btn mt-3 h-12" onClick={()=>{console.log("me llamaron")}}>Iniciar búsqueda</Link>
     </section>
   )
 }
