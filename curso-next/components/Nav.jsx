@@ -38,7 +38,7 @@ const Nav = () => {
             <Link href="/create-prompt" className="black_btn">
               Buscar más
             </Link>
-            <button type="button" onClick={signOut} className="outline_btn">
+            <button type="button" onClick={(e)=>{e.preventDefault(); signOut(); }} className="outline_btn">
               Salir
             </button>
             <Link href="/profile">
@@ -58,7 +58,8 @@ const Nav = () => {
                 <button
                   type="button"
                   key={provider.name}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault(); 
                     signIn(provider.id);
                   }}
                   className="black_btn"
@@ -99,7 +100,8 @@ const Nav = () => {
                 </Link>
                 <button
                   type="button"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault(); 
                     setToogleDropDown(false);
                     signOut();
                   }}
@@ -117,7 +119,8 @@ const Nav = () => {
                 <button
                   type="button"
                   key={provider.name}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     signIn(provider.id);
                   }}
                   className="black_btn"
