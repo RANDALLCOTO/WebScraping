@@ -25,8 +25,9 @@ const ProductCard = ({product}) => {
             {product.productName}
         </h5>
         <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-            {product.productDescription}
+            {product.productPrice}
         </p>
+   
         
         <Link
             href={product.vendorLink} 
