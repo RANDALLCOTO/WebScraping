@@ -4,7 +4,7 @@ import SearchButton from './SearchButton';
 import ProductList from './ProductList';
 
 const Search = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([{companyName:'', companyProducts:[]}]);
   return (
     <section className="w-full flex-center flex-col">
         <h1 className="head_text text-center">
