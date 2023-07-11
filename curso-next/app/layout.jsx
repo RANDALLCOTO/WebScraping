@@ -1,31 +1,35 @@
-import '@styles/globals.css';
-import Nav from '@components/Nav';
-import Provider from '@components/Provider';
+import "@styles/globals.css";
+import Nav from "@components/Nav";
+import Provider from "@components/Provider";
 
 export const medatada = {
-    title:"Cratosoft Comparador de Precios",
-    description: "Compara precios entre productos y servicios de Costa Rica"
-}
+  title: "Cratosoft Comparador de Precios",
+  description: "Compara precios entre productos y servicios de Costa Rica",
+};
 
-const RootLayout = ({children}) => {
+const RootLayout = ({ children }) => {
   return (
-    
     <html lang="en">
-        <body>
-            <Provider>
-                <div className="main">
-                    <div />
-                </div>
-                <main className="app">
-                    < Nav/>
-                    {children}
-                </main>
-            </Provider>
-        </body>
-        
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352598190573902"
+          crossorigin="anonymous"
+        ></script>
+      </head>
+      <body>
+        <Provider>
+          <div className="main">
+            <div />
+          </div>
+          <main className="app">
+            <Nav />
+            {children}
+          </main>
+        </Provider>
+      </body>
     </html>
-  )
-}
-
+  );
+};
 
 export default RootLayout;
