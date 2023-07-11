@@ -28,7 +28,7 @@ const Nav = () => {
           height={30}
           className="object-contain"
         />
-        <p className="logo_text">Cratosoft Solutions</p>
+        <p className="logo_text">Comparador de Precios CR</p>
       </Link>
       
       {/* Desktop navitation */}

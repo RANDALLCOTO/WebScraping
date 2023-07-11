@@ -13,11 +13,12 @@ const productTags = {
 
 const scrapCompanyConfiguration = [
     {
+        id:1,
         name:"Gollo Tiendas",
         url:'https://www.gollo.com/catalogsearch/result/?q=SEARCH_TEXT',
         scrapType:'QUERY_PARAMETER',
         replaceTextOnURL:'SEARCH_TEXT',
-        companyScrapLogo: "dfsfsdf",
+        logoSelector: ".logo img",
         mainSelector: '.products.wrapper.grid.products-grid ol li',
         scrapingFields: [
             {
@@ -77,11 +78,12 @@ const scrapCompanyConfiguration = [
         ]
     },
     {
+        id:2,
         name:"El Rey",
         url:'https://almaceneselrey.com/catalogsearch/result/?q=SEARCH_TEXT',
         scrapType:'QUERY_PARAMETER',
         replaceTextOnURL:'SEARCH_TEXT',
-        companyScrapLogo: "dfsfsdf",
+        logoSelector: ".logo picture img",
         mainSelector: '.products.wrapper.grid.products-grid ol li',
         scrapingFields: [
             {
@@ -139,14 +141,84 @@ const scrapCompanyConfiguration = [
                 ],
             },
         ]
+    },
+    {
+        id:3,
+        name:"Pequeño Mundo",
+        url:'https://tienda.pequenomundo.com/catalogsearch/result/?q=SEARCH_TEXT',
+        scrapType:'QUERY_PARAMETER',
+        replaceTextOnURL:'SEARCH_TEXT',
+        logoSelector: ".logo img",
+        mainSelector: '.products.wrapper.grid.products-grid.columns4 ol li',
+        scrapingFields: [
+            {
+                fieldName: 'productPrice',
+                type: 'Numeric',                
+                fieldSelectors: [
+                    {
+                        order: 1,
+                        selector:'.product-item-info div .price-box.price-final_price .special-price .price-wrapper .price',
+                        selectorValueFrom:"TEXTCONTENT",
+                        attribute:null
+                    },
+                    {
+                        order: 2,
+                        selector:'.product-item-info div .price-box.price-final_price span span span',
+                        selectorValueFrom:"TEXTCONTENT",
+                        attribute:null
+                    }
+                ],
+            },
+            {
+                fieldName: 'vendorLink',
+                type: 'String',                
+                fieldSelectors: [
+                    {
+                        order: 1,
+                        selector:'.product-item-info a',
+                        selectorValueFrom:"ATTRIBUTE",
+                        attribute:'href'
+                    }
+                ],
+            },
+            {
+                fieldName: 'productImage',
+                type: 'String',                
+                fieldSelectors: [
+                    {
+                        order: 1,
+                        selector:'.product-item-info .product-item-photo a img',
+                        selectorValueFrom:"ATTRIBUTE",
+                        attribute:'data-src'
+                    }
+                ],
+            },
+            {
+                fieldName: 'productName',
+                type: 'String',                
+                fieldSelectors: [
+                    {
+                        order: 1,
+                        selector:'.product-item-info div strong a',
+                        selectorValueFrom:"TEXTCONTENT",
+                        attribute:null
+                    }
+                ],
+            },
+        ]
     }
 
 ]
 
+const getCompanyConfiguration =(companyID)=>{
+    return scrapCompanyConfiguration.filter(element => element.id == companyID);
+}
+
 export const GET = async (request, { params }) => {
     try {
         let products = [];
-        for (const company of scrapCompanyConfiguration) {
+        console.log(params.company);
+        for (const company of getCompanyConfiguration(params.company)) {
             //Validate kind of scrap
             let urlToScrap; 
             switch (company.scrapType) {
@@ -158,7 +230,6 @@ export const GET = async (request, { params }) => {
                     break;
             }
             
-            console.log(urlToScrap);
 
             //Get the HTMLx and get the main selector
             const companyStoreHTML = await fetch(urlToScrap);
@@ -166,19 +237,16 @@ export const GET = async (request, { params }) => {
             const dom = new JSDOM(companyStoreBody);
             const document = dom.window.document;
             const companyProducts = document.querySelectorAll(company.mainSelector);
-            console.log(companyProducts.length);
+            const companyLogo = document.querySelector(company.logoSelector)?.getAttribute('src');
             //Going through the products we got
             let currentProducts = [];
             companyProducts.forEach((product, index) => {
-                console.log(companyProducts.length);
                 
                  const temProduct = {};
-                 console.log(company.scrapingFields);
                  //Going through the fields configuration
                  company.scrapingFields.forEach((field)=>{
                        let fieldValue = undefined;
                         field.fieldSelectors.forEach(currentSelector => {
-                            console.log(currentSelector);
                             if (fieldValue== undefined){
                                 switch (currentSelector.selectorValueFrom) {
                                     case "ATTRIBUTE":
@@ -187,6 +255,9 @@ export const GET = async (request, { params }) => {
                                     case "TEXTCONTENT":
                                         fieldValue = product.querySelector(currentSelector.selector)?.textContent.replace(/(\r\n|\n|\r)/gm, "").trim();
                                         break;    
+                                    case "INNERHTML":
+                                            fieldValue = product.querySelector(currentSelector.selector)?.innerHTML;
+                                            break;      
                                     default:
                                         break;
                                 }
@@ -199,45 +270,12 @@ export const GET = async (request, { params }) => {
             });
             products.push({
                 companyName: company.name,
+                companyLogo: companyLogo,
                 companyProducts: currentProducts
             });
+            console.log(currentProducts[0]);
         };
-        console.log(products);
-        /*
-        const companyStoreHTML = await fetch(`https://www.gollo.com/catalogsearch/result/?q=${params.text}`);
-        const companyStoreBody = await companyStoreHTML.text();
-        const dom = new JSDOM(companyStoreBody);
-        const document = dom.window.document;
-        const companyProducts = document.querySelectorAll('.products.wrapper.grid.products-grid ol li');
-        
-        let products = [];
-        [...companyProducts].forEach((product, index) => {
-			console.log(companyProducts.length);
-            //Check if main node is available
-            const testNodeLink = product.querySelector('.product-item-info a')?.getAttribute('href');
-            const testNodeImage = product.querySelector('.product-item-info a span span img')?.getAttribute('src');
-            const testNodeName = product.querySelector('.product-item-info div strong a')?.textContent;
-            let testNodePrice = product.querySelector('.product-item-info div .price-box.price-final_price .special-price .price-wrapper .price')?.textContent;
-            testNodePrice = testNodePrice!=undefined? testNodePrice:product.querySelector('.product-item-info div .price-box.price-final_price span span span')?.textContent; 
-
-            const productItemInfo = product.getElementsByClassName('product-item-info')[0]?.getElementsByTagName('a')[0];
-            const productItemAditionalInfo = product.getElementsByClassName('product-item-info')[0]?.getElementsByClassName('product-item-details')[0];
-            
-            if(productItemInfo && productItemAditionalInfo){
-             const temProduct = {
-                productID: index,
-                productName:getGolloDocumentValue(productItemAditionalInfo, productTags.productName),
-                productDescription: getGolloDocumentValue(productItemAditionalInfo, productTags.productDescription),
-                vendorName:getGolloDocumentValue(null, productTags.vendorName),
-                vendorLink: getGolloDocumentValue(productItemInfo,productTags.vendorLink),
-                productImage:getGolloDocumentValue(productItemInfo, productTags.productImage),
-                productPrice:getGolloDocumentValue(productItemAditionalInfo, productTags.productPrice),//,
-                }
-            products.push(temProduct);
-        }
-        });*/
-//console.log(products);
-        return new Response(JSON.stringify(products), { status: 200 })
+        return new Response(JSON.stringify(products[0]), { status: 200 })
     } catch (error) {
         console.log(error);
         return new Response("Failed to fetch prompts created by user", { status: 500 })

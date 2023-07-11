@@ -1,17 +1,16 @@
+"use client";
 import React from 'react'
-import ProductCard from './ProductCard';
+import HorizontalCardList from './HorizontalCardList';
+import HorizontalCardListLoading from './HorizontalCardListLoading';
 
-const ProductList = ({data}) => {
-  console.log(data);
+const ProductList = ({data, loading}) => {
   return (
     <div className='container mx/auto'>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {data.map(element => (
-                element.companyProducts.map((product)=>(
-                   <ProductCard product={product} company={element.companyName} />))
+              element.companyProducts?.length > 0 && <HorizontalCardList companyProducts={element.companyProducts} companyName={element.companyName} companyLogo={element.companyLogo}/>
             ))
             }
-        </div>
+            {loading && <HorizontalCardListLoading/>}
     </div>
   )
 }
