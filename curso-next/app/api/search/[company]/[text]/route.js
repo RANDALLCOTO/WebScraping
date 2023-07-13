@@ -217,7 +217,7 @@ const getCompanyConfiguration =(companyID)=>{
 export const GET = async (request, { params }) => {
     try {
         let products = [];
-        console.log(params.company);
+        //console.log(params.company);
         for (const company of getCompanyConfiguration(params.company)) {
             //Validate kind of scrap
             let urlToScrap; 
