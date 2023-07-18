@@ -35,8 +35,8 @@ const Nav = () => {
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className="black_btn">
-              Buscar más
+            <Link href="/adminStore" className="black_btn">
+              Mi tienda
             </Link>
             <button type="button" onClick={(e)=>{e.preventDefault(); signOut(); }} className="outline_btn">
               Salir
@@ -91,12 +91,8 @@ const Nav = () => {
                 >
                   Mi perfil
                 </Link>
-                <Link
-                  href="/create-prompt"
-                  className="dropdown_link"
-                  onClick={() => setToogleDropDown(false)}
-                >
-                  Guardar producto
+                <Link href="/adminStore" className="black_btn">
+                  Mi tienda
                 </Link>
                 <button
                   type="button"

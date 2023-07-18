@@ -1,6 +1,7 @@
 import "@styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import Loading from "./loading";
 
 export const medatada = {
   title: "Cratosoft Comparador de Precios",
@@ -13,18 +14,18 @@ const RootLayout = ({ children }) => {
       <head>
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352598190573902"
+          src="/*https*/://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352598190573902"
           crossOrigin="anonymous"
         ></script>
       </head>
-      <body>
+      <body className="__variable_7dbc08 __variable_20951f">
         <Provider>
-          <div className="main">
-            <div />
+          <div  className="main">
+           <div />
           </div>
           <main className="app">
             <Nav />
-            {children}
+               {children}
           </main>
         </Provider>
       </body>

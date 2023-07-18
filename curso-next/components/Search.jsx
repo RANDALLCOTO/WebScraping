@@ -13,7 +13,7 @@ const Search = () => {
   }
   return (
     <section className="w-full flex-center flex-col">
-        <h1 className="head_text text-center">
+        <h1 className="w-full mt-5 font-display text-4xl font-bold	text-center leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
             Búscalo en sólo un lugar
             <br />
         </h1>

@@ -8,6 +8,14 @@
   Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
 */
 
+.__variable_20951f {
+  --font-inter: "__Inter_20951f","__Inter_Fallback_20951f";
+}
+
+.__variable_7dbc08 {
+  --font-satoshi: "__satoshi_7dbc08","__satoshi_Fallback_7dbc08";
+}
+
 .main {
   width: 100vw;
   min-height: 100vh;
@@ -19,7 +27,7 @@
 }
 
 .main:before {
-  background:white;
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
   content: "";
   z-index: 2;
@@ -78,7 +86,7 @@
 }
 
 .black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center;
+  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center h-12;
 }
 
 .outline_btn {
@@ -169,10 +177,6 @@
   @apply flex justify-between items-center;
 }
 
-.general-site-back{
-  background-color: white;
-}
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -182,3 +186,5 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+
