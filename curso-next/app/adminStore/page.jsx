@@ -16,6 +16,12 @@ const AdminStore =  () => {
           itemLink:"/store"
       },
       {
+        itemImage:"https://www.hostgator.com/blog/wp-content/uploads/2019/01/Create-product-categories-for-your-online-store.png",
+        itemTitle:"Configurar categorias",
+        itemDescription:"Configura las categorias de tu tienda",
+        itemLink:"/store/category/maintenance/rcotojimenez@gmail.com/NEW"
+      },
+      {
           itemImage:"https://www.identixweb.com/wp-content/uploads/2022/01/Add-Customization-for-Custom-Products.png",
           itemTitle:"Configurar productos",
           itemDescription:"Configura aspectos iniciales de tu tienda",
@@ -23,9 +29,9 @@ const AdminStore =  () => {
       },
       {
           itemImage:"https://www.clio.com/wp-content/uploads/2021/10/lawyer-payment-methods.png",
-          itemTitle:"Editar información de pago",
-          itemDescription:"Configura aspectos iniciales de tu tienda",
-          itemLink:"/payments"
+          itemTitle:"Previsualizar mi tienda",
+          itemDescription:"",
+          itemLink:`/store/tiendaPatito/preview`
       }
   ];
     useEffect(()=>{

@@ -1,4 +1,4 @@
-import { IMAGES_FORMAT_ACCEPTED, IMAGE_PRINCIPAL_STORE_DIMENSION } from "./constants";
+import { CATEGORY_DEFAULT_LIST, IMAGES_FORMAT_ACCEPTED, IMAGE_PRINCIPAL_STORE_DIMENSION } from "./constants";
 import InputMask from 'react-input-mask';
 import { redirect } from 'next/navigation'
 
@@ -24,37 +24,36 @@ export const validatePrincipalImageStore =(imageArray=[])=>{
     return frontEndFormattedMessage("success");    
 }
 
-export const fileToBase64 = (file, onSuccessFunction, onErrorFunction) =>{
+export const fileToBase64 = (file, onImageValidated) =>{
         var reader = new FileReader();
         reader.onload = function () {
-            validateImageDimension(reader.result, IMAGE_PRINCIPAL_STORE_DIMENSION, onSuccessFunction, onErrorFunction);
-            onSuccessFunction(true, reader.result, null);
+            onImageValidated({messageCode:"OK", messageValue:reader.result});
         };
         reader.onerror = function (error) {
-            onErrorFunction(frontEndFormattedMessage("error", "FILE_NOT_BASE64", error))
+            onImageValidated({messageCode:"ERROR", messageValue:"FILE_NOT_BASE64"});
         };
         reader.readAsDataURL(file);
 }
 
-const validateImageDimension = (base64Image, acceptedDimension, onSuccessFunction, onErrorFunction) => {
+export const validateImageDimension = async (base64Image, acceptedDimension, onDimenssionValidated) => {
    try {
      var i = new Image();
      i.onload = function(){
          if(i.width == acceptedDimension.width && 
             i.height == acceptedDimension.height) {
-                onSuccessFunction(true, base64Image);
+                onDimenssionValidated({messageCode:"OK", messageValue:base64Image});
             }else{
-                onErrorFunction(frontEndFormattedMessage("error", "NOT_ACCEPTED_DIMENSION", `Las dimensiones aceptadas deben ser de ${acceptedDimension.width}x${acceptedDimension.height}. Favor intente nuevamente.`));
+                onDimenssionValidated({messageCode:"ERROR", messageValue:"NOT_ACCEPTED_DIMENSION"});
             }
      };
      i.src = base64Image;
    } catch (error) {
-        onErrorFunction(frontEndFormattedMessage("error", "UKNOWN", error));
+        return {messageCode:"ERROR", messageValue:"UKNOWN"};
    }
 
 }
 
-const frontEndFormattedMessage = (type, messageCode="", messageDescription="") => {
+export const frontEndFormattedMessage = (type, messageCode="", messageDescription="") => {
     return {type, messageCode, messageDescription}
 }
 
@@ -69,3 +68,11 @@ export const PhoneNumber = props => (
     </InputMask>
 
   );
+
+  export const CategoriesToArray = (array)=>{
+    let arrayToreturn = CATEGORY_DEFAULT_LIST;
+    array.forEach(element => {
+        arrayToreturn.push({value:element._id, label:element.description});
+    });   
+    return arrayToreturn;
+  }

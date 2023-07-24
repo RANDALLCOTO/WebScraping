@@ -1,6 +1,10 @@
 import { Schema, model, models } from "mongoose";
 
 const ProductSchema = new Schema({
+    store:{
+        type: String,
+        required: [true, 'Tienda es requerida'],
+    },
     name:{
         type: String,
         required: [true, 'Nombre del producto es requerido'],
@@ -9,11 +13,15 @@ const ProductSchema = new Schema({
         type: String,
         required: [true, 'Descripcion es requerida'],
     },
+    category:{
+        type: String,
+        required: [true, 'Categoria es requerida'],
+    },
     price:{
-        type:number,
+        type:Number,
         required: [true, 'Precio es requerido'],
     },
-    especialPrice:{
+    especialprice:{
         type:Number,
     },
     currency:{

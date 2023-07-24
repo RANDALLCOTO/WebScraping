@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
  
@@ -25,26 +24,6 @@ const CurrencyInput = ({ maskOptions, ...inputProps }) => {
   return <MaskedInput mask={currencyMask} {...inputProps} className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"/>
 }
  
-CurrencyInput.defaultProps = {
-  inputMode: 'numeric',
-  maskOptions: {},
-}
- 
-CurrencyInput.propTypes = {
-  inputmode: PropTypes.string,
-  maskOptions: PropTypes.shape({
-    prefix: PropTypes.string,
-    suffix: PropTypes.string,
-    includeThousandsSeparator: PropTypes.boolean,
-    thousandsSeparatorSymbol: PropTypes.string,
-    allowDecimal: PropTypes.boolean,
-    decimalSymbol: PropTypes.string,
-    decimalLimit: PropTypes.string,
-    requireDecimal: PropTypes.boolean,
-    allowNegative: PropTypes.boolean,
-    allowLeadingZeroes: PropTypes.boolean,
-    integerLimit: PropTypes.number,
-  }),
-}
+
  
 export default CurrencyInput
