@@ -9,6 +9,10 @@ const StoreSchema = new Schema({
         type: String,
         required: [true, 'Descripcion es requerida'],
     },
+    user:{
+        type:String,
+        required:[true, 'Usuario es requerido']
+    },
     email:{
         type:String,
         required: [true, 'Email es requerido'],
@@ -23,9 +27,13 @@ const StoreSchema = new Schema({
         type:Boolean,
         default: false
     },
+    address:{
+        type: String,
+        required: [true, 'Direccion es requerido'],
+    },
     image:{
         type: String
-    }
+    },        
 });
 
 const Store = models.Store || model("Store", StoreSchema);

@@ -1,7 +1,7 @@
 "use client"
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
-const StoreNav = () => {
+const StoreNav = ({store}) => {
   const [showCard, setShowCard] = useState(false);
 
   return (<>
@@ -9,7 +9,7 @@ const StoreNav = () => {
           <div className="absolute top-0  z-50 container mx-auto px-6 py-3">
               <div className="flex items-center justify-between">
                   <div className="hidden w-full text-gray-600 md:flex md:items-center">
-                      <img src="https://www.gollo.com/static/version1689679430/frontend/Gollo/default/es_CR/images/logo.svg" className='absolute top-2 left-2 max-w-xs'/>
+                      <img src={`${store.image}`} className='absolute top-2 left-2 ml-2 mt-2' style={{width:"200px"}}/>
                   </div>
                   <div className="flex items-center justify-end w-full">
                       <button  className="text-gray-600 focus:outline-none mx-4 sm:mx-0" onClick={()=>{setShowCard(true)}}>
@@ -29,15 +29,15 @@ const StoreNav = () => {
               </div>
               <nav /*className="isOpen ? '' : 'hidden'" */className="sm:flex sm:justify-center sm:items-center mt-4">
                   <div className="flex flex-col sm:flex-row">
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Home</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Shop</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Categories</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Contact</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">About</a>
+                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Inicio</a>
+                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Productos</a>
+                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Categorias</a>
+                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Contacto</a>
+                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">¿Quiénes somos?</a>
                   </div>
               </nav>
-              <div className="relative mt-6 max-w-lg mx-auto w-full text-center">
-                 <label className='text-gray-700 text-4xl'>Nombre de tienda</label>
+              <div className=" max-w-lg mx-auto my-auto justify-center w-full text-center lg:mt-10">
+                 <label className='text-gray-700 text-4xl'>{store.name}</label>
               </div>
           </div>
       </header>

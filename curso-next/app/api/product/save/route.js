@@ -4,17 +4,19 @@ import Product from '@models/product';
 export const POST = async (req) => {
     try {
         const productToSave = await req.json();
-        console.log(productToSave);
+        let createdID;
         //SERVERLESS LAMBDA DYNAMODB
         await connectToDB();
+
         //check if Product exists
         const productExists = await Product.findOne({
             _id:productToSave.id
         })
+      
+
         //if not, create new product
          if(!productExists){
-            console.log(productToSave);
-           await Product.create({
+            const result = await Product.create({
             store:productToSave.store,
             name:productToSave.name,
             description:productToSave.description,
@@ -23,23 +25,26 @@ export const POST = async (req) => {
             especialprice:productToSave.especialPrice,
             currency:productToSave.currency,
             image: productToSave.image
-           }) 
+           });
+           createdID = result._id.toString(); 
          } else{
-            await Product.updateOne({
-                _id:productToSave.id,
+            console.log("ingrese aca")
+            await Product.updateOne({_id:productToSave.id},
+                {
                 store:productToSave.store,
                 name:productToSave.name,
                 description:productToSave.description,
+                category:productToSave.category,
                 price:productToSave.price,
                 especialprice:productToSave.especialPrice,
                 currency:productToSave.currency,
                 image: productToSave.image
-               })    
+               });    
          }  
-         return new Response(JSON.stringify({holis:"desde backend"}), { status: 200 })
+         return new Response(JSON.stringify({id:createdID}), { status: 200 })
     } catch (error) {
-        console.log(error);
-        return false;
+        return new Response(JSON.stringify({message:error.message}), { status: 500 })
+
     }
     
 }

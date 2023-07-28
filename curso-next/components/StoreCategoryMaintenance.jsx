@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import DragDropFiles from '@components/DragDropFiles';
 import Modal from '@components/Modal';
-import { CATEGORY_SAVE_CONFIRM_ACTION, IMAGE_LOADED_CONFIRM_ACTION, IMAGE_FAILED_CONFIRM_ACTION, GENERAL_UKNOWN_ERROR, GENERAL_SUCCESS_PROCESS, IMAGE_CATEGORY_STORE_DIMENSION, CATEGORY_TYPES     } from '@utils/constants';
+import { CATEGORY_SAVE_CONFIRM_ACTION, IMAGE_LOADED_CONFIRM_ACTION, IMAGE_FAILED_CONFIRM_ACTION, GENERAL_UKNOWN_ERROR, GENERAL_SUCCESS_PROCESS, IMAGE_CATEGORY_STORE_DIMENSION, CATEGORY_TYPES, DROPDOWN_NEED_TB_SELECTED     } from '@utils/constants';
 import { getSession, signIn } from "next-auth/react";
 import Loading from '@app/loading';
 import axios from 'axios';
@@ -28,7 +28,8 @@ const StoreCategoryMaintenance = ({ params }) => {
         if (!session) {
           signIn();
         } else {
-            setStore(session.user.email);
+            const storeInfo = await axios.get(`/api/user/${session.user.id}/store/`);
+            setStore(storeInfo.data._id);
             if(params.categoryId!="NEW")
             {
                 axios.get(`/api/category/${params.categoryId}/category/get/`)
@@ -49,6 +50,7 @@ const StoreCategoryMaintenance = ({ params }) => {
                     setShowConfirmAction(true);
                 });
             }else{
+                
                 setLoading(false);
             }
         }
@@ -57,6 +59,13 @@ const StoreCategoryMaintenance = ({ params }) => {
     }, []);
 
       
+    const restartForm = ()=>{
+        setId(null);
+        setName('');
+        setDescription('');
+        setType(CATEGORY_TYPES[0].value);
+    }
+
     const confirmAction = (e) =>{
         e.preventDefault();
         setModalActionInfo(CATEGORY_SAVE_CONFIRM_ACTION);
@@ -65,28 +74,35 @@ const StoreCategoryMaintenance = ({ params }) => {
 
     const onConfirm = async(processToExecute)=>{
             if (processToExecute === "SAVECATEGORY") {
-              setLoading(true);
-              axios.post(`/api/category/save`, {
-                  id:id,
-                  store: store,
-                  name: name,
-                  description: description,
-                  type: type,
-                  image: image,
-                })
-                .then((response) => {
-                  setLoading(false);
-                  setModalActionInfo(GENERAL_SUCCESS_PROCESS);
-                  setShowConfirmAction(true);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                  setModalActionInfo({
-                    ...GENERAL_UKNOWN_ERROR,
-                    message: error.message,
+
+              if(type == CATEGORY_TYPES[0].value){
+                setModalActionInfo({...DROPDOWN_NEED_TB_SELECTED, message:"Por favor seleccione el tipo de categoria"});
+                setShowConfirmAction(true);
+              }else{
+                setLoading(true);
+                axios.post(`/api/category/save`, {
+                    id:id,
+                    store: store,
+                    name: name,
+                    description: description,
+                    type: type,
+                    image: image,
+                  })
+                  .then((response) => {
+                    restartForm();
+                    setLoading(false);
+                    setModalActionInfo(GENERAL_SUCCESS_PROCESS);
+                    setShowConfirmAction(true);
+                  })
+                  .catch((error) => {
+                    setLoading(false);
+                    setModalActionInfo({
+                      ...GENERAL_UKNOWN_ERROR,
+                      message: error.message,
+                    });
+                    setShowConfirmAction(true);
                   });
-                  setShowConfirmAction(true);
-                });
+              }
             }else{
                 setShowConfirmAction(false);
             }
@@ -116,7 +132,7 @@ const StoreCategoryMaintenance = ({ params }) => {
 
   return (
     <>
-        <form method='POST' onSubmit={confirmAction} className="p-6 bg-gray-100 flex items-center justify-center">
+        <form method='POST' onSubmit={confirmAction} className="mx-auto lg:max-w-screen-xl  p-6 bg-gray-100 flex items-center justify-center">
             {showConfirmAction && <Modal modalActionInfo={modalActionInfo} onConfirm={onConfirm} onCancel={onCancel} />}
             <div className="container max-w-screen-lg mx-auto">
                 <h2 className="font-semibold text-xl text-gray-600">Categorias de la tienda</h2>

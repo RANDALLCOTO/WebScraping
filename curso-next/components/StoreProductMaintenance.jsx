@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import DragDropFiles from '@components/DragDropFiles';
 import Modal from '@components/Modal';
-import { PRODUCT_SAVE_CONFIRM_ACTION, IMAGE_LOADED_CONFIRM_ACTION, IMAGE_FAILED_CONFIRM_ACTION, GENERAL_UKNOWN_ERROR, GENERAL_SUCCESS_PROCESS, CURRENCY_LIST, IMAGE_PRODUCT_STORE_DIMENSION, CATEGORY_DEFAULT_LIST     } from '@utils/constants';
+import { PRODUCT_SAVE_CONFIRM_ACTION, IMAGE_LOADED_CONFIRM_ACTION, IMAGE_FAILED_CONFIRM_ACTION, GENERAL_UKNOWN_ERROR, GENERAL_SUCCESS_PROCESS, CURRENCY_LIST, IMAGE_PRODUCT_STORE_DIMENSION, CATEGORY_DEFAULT_LIST, DROPDOWN_NEED_TB_SELECTED     } from '@utils/constants';
 import { getSession, signIn } from "next-auth/react";
 import Loading from '@app/loading';
 import axios from 'axios';
@@ -19,14 +19,14 @@ const StoreProductMaintenance = ({ params }) => {
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(CATEGORY_DEFAULT_LIST[0].value);
     const [price, setPrice] = useState(0);
     const [specialPrice, setSpecialPrice] = useState(0);
     const [currency, setCurrency] = useState(CURRENCY_LIST[0].value);
     const [image, setImage] = useState('');
     const [store, setStore] = useState(null);
     const [showImage, setShowImage] = useState(false);
-    const [categoryList, setCategoryList] = useState(CATEGORY_DEFAULT_LIST);
+    const [categoryList, setCategoryList] = useState(CATEGORY_DEFAULT_LIST[0].value);
 
 
     useEffect(() => {
@@ -35,8 +35,10 @@ const StoreProductMaintenance = ({ params }) => {
         if (!session) {
           signIn();
         } else {
-            setStore(session.user.email);
-            const categories = await axios.get(`/api/category/${session.user.email}/store/get`);
+            const storeInfo = await axios.get(`/api/user/${session.user.id}/store/`);
+            console.log(storeInfo);
+            setStore(storeInfo.data._id);
+            const categories = await axios.get(`/api/category/${storeInfo.data._id}/store/get`);
             setCategoryList(CategoriesToArray(categories.data));
         
             if(params.productId!="NEW")
@@ -69,7 +71,18 @@ const StoreProductMaintenance = ({ params }) => {
       securePage();
     }, []);
 
-      
+    
+    const restartForm = ()=>{
+        setId(null);
+        setName('');
+        setDescription('');
+        setPrice(0);
+        setSpecialPrice(0);
+        setCurrency(CURRENCY_LIST[0].value);
+        setImage('');
+        setCategory(categoryList[0].value);
+    }
+
     const confirmAction = (e) =>{
         e.preventDefault();
         setModalActionInfo(PRODUCT_SAVE_CONFIRM_ACTION);
@@ -78,31 +91,37 @@ const StoreProductMaintenance = ({ params }) => {
 
     const onConfirm = async(processToExecute)=>{
             if (processToExecute === "SAVEPRODUCT") {
-              setLoading(true);
-              axios.post(`/api/product/save`, {
-                  id:id,
-                  store: store,
-                  name: name,
-                  description: description,
-                  category:category,
-                  price: price.toString().replaceAll(",", ""),
-                  specialprice: specialPrice.toString().replaceAll(",", ""),
-                  currency: currency,
-                  image: image,
-                })
-                .then((response) => {
-                  setLoading(false);
-                  setModalActionInfo(GENERAL_SUCCESS_PROCESS);
-                  setShowConfirmAction(true);
-                })
-                .catch((error) => {
-                  setLoading(false);
-                  setModalActionInfo({
-                    ...GENERAL_UKNOWN_ERROR,
-                    message: error.message,
-                  });
-                  setShowConfirmAction(true);
-                });
+                if (category==CATEGORY_DEFAULT_LIST[0].value){
+                    setModalActionInfo({...DROPDOWN_NEED_TB_SELECTED, message:"Por favor seleccione la categoria"});
+                    setShowConfirmAction(true);     
+                }else{
+                    setLoading(true);
+                    axios.post(`/api/product/save`, {
+                        id:id,
+                        store: store,
+                        name: name,
+                        description: description,
+                        category:category,
+                        price: price.toString().replaceAll(",", ""),
+                        specialprice: specialPrice.toString().replaceAll(",", ""),
+                        currency: currency,
+                        image: image,
+                      })
+                      .then((response) => {
+                        restartForm();
+                        setLoading(false);
+                        setModalActionInfo(GENERAL_SUCCESS_PROCESS);
+                        setShowConfirmAction(true);
+                      })
+                      .catch((error) => {
+                        setLoading(false);
+                        setModalActionInfo({
+                          ...GENERAL_UKNOWN_ERROR,
+                          message: error.message,
+                        });
+                        setShowConfirmAction(true);
+                      });
+                }
             }else{
                 setShowConfirmAction(false);
             }
@@ -132,7 +151,7 @@ const StoreProductMaintenance = ({ params }) => {
 
   return (
     <>
-        <form method='POST' onSubmit={confirmAction} className="p-6 bg-gray-100 flex items-center justify-center">
+        <form method='POST' onSubmit={confirmAction} className="mx-auto lg:max-w-screen-xl p-6 bg-gray-100 flex items-center justify-center">
             {showConfirmAction && <Modal modalActionInfo={modalActionInfo} onConfirm={onConfirm} onCancel={onCancel} />}
             <div className="container max-w-screen-lg mx-auto">
                 <h2 className="font-semibold text-xl text-gray-600">Productos de la tienda</h2>

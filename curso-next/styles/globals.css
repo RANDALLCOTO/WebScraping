@@ -82,7 +82,7 @@
 /* Tailwind Styles */
 
 .app {
-  @apply relative z-10 flex justify-center flex-col  sm:px-16 px-1;
+  @apply relative z-10 flex justify-center flex-col 
 }
 
 .black_btn {

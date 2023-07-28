@@ -16,12 +16,14 @@ const Store = () => {
     const [showConfirmAction, setShowConfirmAction] = useState(false);
     const [modalActionInfo, setModalActionInfo] = useState({});
     const [name, setName] = useState('');
-    const [description, setDescription] = useState(null);
-    const [contactNumber, setContactNumber] = useState(null);
+    const [description, setDescription] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
     const [showwhatssapicon, setShowWhatssapIcon] = useState(false);
-    const [email, setEmail] = useState(null);
-    const [image, setImage] = useState(null);
+    const [email, setEmail] = useState('');
+    const [image, setImage] = useState('');
     const [showImage, setShowImage] = useState(false);
+    const [storeId, setStoreId] = useState(null);
+    const [address, setAddress] = useState('');
 
     useEffect(() => {
       const securePage = async () => {
@@ -29,17 +31,18 @@ const Store = () => {
         if (!session) {
           signIn();
         } else {
-          setEmail(session.user.email);
-          axios.get(`/api/store/get/${session.user.email}`)
+          axios.get(`/api/store/${session.user.id}/user/get`)
             .then((response)  => {
                 const data = response.data;
-                if (typeof data?.email != undefined) {
-                    setName(data.name);
-                    setDescription(data.description);
-                    setEmail(data.email);
-                    setImage(data.image);
-                    setContactNumber(data.contactnumber);
-                    setShowWhatssapIcon(data.showwhatssapicon);
+                if (data.length > 0) {
+                    setName(data[0].name);
+                    setDescription(data[0].description);
+                    setEmail(data[0].email);
+                    setImage(data[0].image);
+                    setContactNumber(data[0].contactnumber);
+                    setAddress(data[0].address);
+                    setShowWhatssapIcon(data[0].showwhatssapicon);
+                    setStoreId(data[0]._id);
                 }
                 setLoading(false);
             }).catch(error => {
@@ -60,18 +63,26 @@ const Store = () => {
     }
 
     const onConfirm = async(processToExecute)=>{
+      const session = await getSession();
+      if (!session) {
+        signIn();
+      } else {
             if (processToExecute === "SAVESTORE") {
               setLoading(true);
               axios
                 .post(`/api/store/save`, {
+                  id:storeId,
                   name: name,
                   description: description,
                   contactnumber: contactNumber.toString().replace(/[^\w]/g, ""),
                   email: email,
                   showwhatssapicon: showwhatssapicon,
                   image: image,
+                  address: address,
+                  user:session.user.id
                 })
                 .then((response) => {
+                  setStoreId(response.data.id);
                   setLoading(false);
                   setModalActionInfo(GENERAL_SUCCESS_PROCESS);
                   setShowConfirmAction(true);
@@ -87,6 +98,7 @@ const Store = () => {
             }else{
                 setShowConfirmAction(false);
             }
+          }
     }
 
     const onCancel = ()=>{
@@ -106,13 +118,12 @@ const Store = () => {
         
     }
     
-    
     if(loading)
       return <Loading/>
 
   return (
     <>
-      <form method='POST' onSubmit={confirmAction} className="p-6 bg-gray-100 flex items-center justify-center">
+      <form method='POST' onSubmit={confirmAction} className="mx-auto lg:max-w-screen-xl  p-6 bg-gray-100 flex items-center justify-center">
           {showConfirmAction && <Modal modalActionInfo={modalActionInfo} onConfirm={onConfirm} onCancel={onCancel} />}
           <div className="container max-w-screen-lg mx-auto">
           <div>
@@ -134,18 +145,23 @@ const Store = () => {
                       </div>
       
                       <div className="md:col-span-5">
-                          <label htmlFor="address">Descripción de tienda</label>
-                          <input type="text" name="address" id="address" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Describe los productos y servicios que ofreces." value={description} onChange={e => {setDescription(e.target.value);}} />
+                          <label htmlFor="descrition">Descripción de tienda</label>
+                          <input type="text" name="descrition" id="descrition" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Describe los productos y servicios que ofreces." value={description} onChange={e => {setDescription(e.target.value);}} />
                       </div>
 
                       <div className="md:col-span-3">
-                      <label htmlFor="email">Email de contacto</label>
-                      <input disabled={true} type="text" name="email" id="email" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"  placeholder="email@dominio.com" value={email} />
+                        <label htmlFor="email">Email de contacto</label>
+                        <input required type="email" name="email" id="email" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"  placeholder="email@dominio.com" value={email} onChange={e => {setEmail(e.target.value);}}/>
                       </div>
 
                       <div className="md:col-span-2">
-                      <label htmlFor="email">Número de Contacto</label>
-                      <PhoneNumber value={contactNumber}  onChange={e => {setContactNumber(e.target.value);}}/>
+                        <label htmlFor="contactnumber">Número de Contacto</label>
+                        <PhoneNumber name="contactnumber" id="contactnumber" value={contactNumber}  onChange={e => {setContactNumber(e.target.value);}}/>
+                      </div>
+
+                      <div className="md:col-span-5">
+                        <label htmlFor="address">Dirección física</label>
+                        <input required type="input" name="address" id="address" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"  placeholder="País, Ciudad, otras señas." value={address} onChange={e => {setAddress(e.target.value);}}/>
                       </div>
 
                       <div className="md:col-span-5">

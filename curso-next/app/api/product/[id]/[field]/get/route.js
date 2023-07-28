@@ -3,7 +3,10 @@ import Product from '@models/product';
 
 export const GET = async (req, { params }) => {
     try {
-        //SERVERLESS LAMBDA DYNAMODB
+         //DB
+         await connectToDB();
+
+        //Check if products exists
         let productExists;
         if(params.field =='product'){
             productExists = await Product.findOne({_id:params.id});

@@ -2,6 +2,7 @@ import "@styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
 import Loading from "./loading";
+import ScrollToTopButton from "@components/ScrollToTop";
 
 export const medatada = {
   title: "Cratosoft Comparador de Precios",
@@ -12,11 +13,7 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <head>
-        <script
-          async
-          src="/*https*/://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2352598190573902"
-          crossOrigin="anonymous"
-        ></script>
+
       </head>
       <body className="__variable_7dbc08 __variable_20951f">
         <Provider>
@@ -26,6 +23,7 @@ const RootLayout = ({ children }) => {
           <main className="app">
             <Nav />
                {children}
+               <ScrollToTopButton/>
           </main>
         </Provider>
       </body>

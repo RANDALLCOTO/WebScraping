@@ -3,9 +3,9 @@ import Category from '@models/category';
 
 export const GET = async (req, { params }) => {
     try {
-        //SERVERLESS LAMBDA DYNAMODB
-
+        //DB
         await connectToDB();
+
         //check if category exists
         let categoryExists;
         if(params.field =='category'){

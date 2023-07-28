@@ -42,10 +42,10 @@ const ImageSlider = () => {
 
   return (
     <>
-      <div ref={sliderRef} className="keen-slider  x-overflow-auto max-h-80">
+      <div ref={sliderRef} className="keen-slider  x-overflow-auto max-h-96">
         <div className="keen-slider__slide number-slide1">
           <img
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
+            src="https://img.freepik.com/free-photo/white-wedding-arrangement-with-copy-space_23-2148243968.jpg"
             className="w-full"
           />
         </div>

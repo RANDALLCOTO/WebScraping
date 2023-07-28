@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSession, signIn } from "next-auth/react";
 import Loading from '@app/loading';
-import StoreProductMaintenance from '@components/StoreProductMaintenance';
 import StoreCategoryMaintenance from '@components/StoreCategoryMaintenance';
 
 const Category = ({params}) => {
