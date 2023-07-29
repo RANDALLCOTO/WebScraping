@@ -19,7 +19,7 @@ const [loading, setLoading] = useState(true);
       try {
         const data = await axios.get("http://localhost:3000/api/store/64a3b2aea00590db17e572a5/get-full-store");
         setStoreData(data.data);
-        console.log(data);
+        console.log(data.data);
         setLoading(false);
       } catch (error) {
         setStoreData({});
@@ -32,7 +32,7 @@ const [loading, setLoading] = useState(true);
   return (
   <div className='relative w-full !bg-gradient-to-r from-white from-10% via-pink-100 via-20% to-pink-100 to-80%'>
     {!loading&& <StoreNav store={storeData.store} mode="EDIT"/>}
-    {!loading&& <ImageSlider mode="EDIT"/>}
+    {!loading&& <ImageSlider mode="EDIT" images={storeData.carousel}/>}
     {!loading&& <CategoryCardList mode="EDIT" store={params.store} categories={storeData.categories}/>}
     {!loading&& <ProductList mode="EDIT" categories={storeData.categories}/>}
     {!loading&& <StoreFooter mode="EDIT" store = {storeData.store}/>}

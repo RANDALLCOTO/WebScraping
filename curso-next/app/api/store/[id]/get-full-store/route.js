@@ -2,6 +2,7 @@ import { connectToDB } from "@utils/database";
 import Store from '@models/store';
 import Category from "@models/category";
 import Product from "@models/product";
+import Carousel from "@models/carousel";
 export const GET = async (req, { params }) => {
     try {
         //DB
@@ -31,6 +32,12 @@ export const GET = async (req, { params }) => {
         });
 
         storeInfo['categories'] = categoryArray;
+
+        let carouselImages = await Carousel.find({store:store._id.toString()});
+
+        if(carouselImages.length > 0)
+            storeInfo['carousel'] = carouselImages;
+
         return new Response(JSON.stringify(storeInfo), { status: 200 })
          
     } catch (error) {

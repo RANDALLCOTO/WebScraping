@@ -3,13 +3,17 @@ import React, {useState} from 'react';
 
 const StoreNav = ({store}) => {
   const [showCard, setShowCard] = useState(false);
+  const [showNav, setShowNav] = useState(false);
 
   return (<>
         <header className='relative'>
-          <div className="absolute top-0  z-50 container mx-auto px-6 py-3">
+          <div className="lg:absolute top-0  z-50 container mx-auto px-6 py-3">
               <div className="flex items-center justify-between">
                   <div className="hidden w-full text-gray-600 md:flex md:items-center">
                       <img src={`${store.image}`} className='absolute top-2 left-2 ml-2 mt-2' style={{width:"200px"}}/>
+                  </div>
+                  <div className="flex w-full text-gray-600 md:hidden">
+                     <label className='text-gray-700 text-medium'>{store.name}</label>
                   </div>
                   <div className="flex items-center justify-end w-full">
                       <button  className="text-gray-600 focus:outline-none mx-4 sm:mx-0" onClick={()=>{setShowCard(true)}}>
@@ -19,7 +23,7 @@ const StoreNav = ({store}) => {
                       </button>
 
                       <div className="flex sm:hidden">
-                          <button  type="button" className="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500" aria-label="toggle menu">
+                          <button  type="button" className="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500" aria-label="toggle menu" onClick={()=>{setShowNav(!showNav)}}>
                               <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current">
                                   <path fillRule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
                               </svg>
@@ -27,18 +31,15 @@ const StoreNav = ({store}) => {
                       </div>
                   </div>
               </div>
-              <nav /*className="isOpen ? '' : 'hidden'" */className="sm:flex sm:justify-center sm:items-center mt-4">
+              <nav /*className="isOpen ? '' : 'hidden'" */className={`${showNav?"hidden":""} sm:flex sm:justify-center sm:items-center mt-4`}>
                   <div className="flex flex-col sm:flex-row">
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Inicio</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Productos</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Categorias</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">Contacto</a>
-                      <a className="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="#">¿Quiénes somos?</a>
+                      <a className="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#">Inicio</a>
+                      <a className="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#">Productos</a>
+                      <a className="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#">Categorias</a>
+                      <a className="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#">Contacto</a>
+                      <a className="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#">¿Quiénes somos?</a>
                   </div>
               </nav>
-              <div className=" max-w-lg mx-auto my-auto justify-center w-full text-center lg:mt-10">
-                 <label className='text-gray-700 text-4xl'>{store.name}</label>
-              </div>
           </div>
       </header>
       <div /*className="CARRO CON ITEMS translate-x-0 ease-out' : CARROSIN ITEMS 'translate-x-full ease-in'"*/ className={`fixed translate-x-0 ease-out right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 ${!showCard?'translate-x-full ease-in':'translate-x-0 ease-out'}`}>
