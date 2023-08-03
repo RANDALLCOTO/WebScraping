@@ -3,8 +3,9 @@ import React from "react"
 import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css";
 import Link from "next/link";
+import {AiOutlineEdit} from 'react-icons/ai';
 
-const ImageSlider = ({images=[]}) => {
+const ImageSlider = ({carouselUIConfig, images=[], mode, store}) => {
   const [sliderRef] = useKeenSlider(
     {
       loop: true,
@@ -43,7 +44,7 @@ const ImageSlider = ({images=[]}) => {
 
   return (
     <>
-      <div ref={sliderRef} className="bg-cover keen-slider x-overflow-auto max-h-40 lg:max-h-[40rem]">
+      <div ref={sliderRef} className="relative bg-cover keen-slider x-overflow-auto max-h-40 lg:max-h-[40rem]">
         {images.map((element, index)=>(
           <div className={`keen-slider__slide number-slide${index+1}`} key={index}>
             <img
@@ -56,11 +57,18 @@ const ImageSlider = ({images=[]}) => {
                 style={{backgroundColor: "hsla(0,0%,0%,0.2)"}}
                 >
                 <div className="flex h-full items-center justify-center text-center">
-                  <p className="text-white opacity-100 sm:w-1/2 text-medium lg:text-6xl lg:w-[30rem]" 
-                 >{element.label}</p>
+                  <p className={`ttext-${carouselUIConfig.description} opacity-100 sm:w-1/2 text-medium lg:text-6xl lg:w-[30rem]`} 
+                 >{element.label}</p> 
                 </div>
               </div>
             </Link>
+            {mode=="EDIT" &&
+                <Link href={`/store/carousel/maintenance/${store}/${element._id}`} className='absolute bottom-10 right-2 bottom-0  overflow-hidden bg-fixed'>
+                <AiOutlineEdit
+                  className="rounded h-8 w-8 ml-15 bg-white"
+                  color="gray"
+                />
+              </Link>}
           </div>
         ))}
       </div>

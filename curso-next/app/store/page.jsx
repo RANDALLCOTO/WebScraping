@@ -173,7 +173,7 @@ const Store = () => {
                       </div>
 
                       <div className="md:col-span-5">
-                          <label htmlFor="image">Proporcione la imagen de portada de la tienda</label>
+                          <label htmlFor="image">Proporcione el logo de la tienda</label>
                           <DragDropFiles id="image" name="image" onImageLoaded={setInternalImage} acceptedDimension={IMAGE_PRINCIPAL_STORE_DIMENSION}/>
                       </div>
               

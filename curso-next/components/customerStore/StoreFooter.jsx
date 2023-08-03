@@ -1,13 +1,15 @@
 import { FormatPhoneNumber } from '@utils/functions';
-import React from 'react'
+import React from 'react';
+import Link from 'next/link';
+import {AiOutlineEdit} from 'react-icons/ai';
 
-const StoreFooter = ({store}) => {
+const StoreFooter = ({mode, store}) => {
   return (
     <footer className="mt-10 p-4 sm:p-6 dark:bg-gray-800 w-full">
       <div className="mx-auto ">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="https://flowbite.com" className="flex items-center">
+            <a href="#" className="flex items-center">
               <img
                 src={`${store.image}`}
                 className="mr-3 h-auto"
@@ -17,6 +19,13 @@ const StoreFooter = ({store}) => {
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 {store.name}
               </span>
+              {mode=="EDIT" &&
+                    <Link href={`/store`} className='mx-auto my-auto'>
+                    <AiOutlineEdit
+                      className="inline rounded h-8 w-8 ml-15 bg-white"
+                      color="gray"
+                    />
+                  </Link>}
             </a>
           </div>
           <div className="">
@@ -30,8 +39,16 @@ const StoreFooter = ({store}) => {
                 </li>
                 <li>
                   {FormatPhoneNumber(store.contactnumber)}
+                  {mode=="EDIT" &&
+                    <Link href={`/store`} className='mx-auto my-auto'>
+                    <AiOutlineEdit
+                      className="inline rounded h-8 w-8 ml-20 bg-white"
+                      color="gray"
+                    />
+                  </Link>}
                 </li>
               </ul>
+              
             </div>
             
           </div>

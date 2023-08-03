@@ -1,20 +1,29 @@
 "use client"
 import React, {useState} from 'react';
+import Link from 'next/link';
+import {AiOutlineEdit} from "react-icons/ai"
 
-const StoreNav = ({store}) => {
+const StoreNav = ({mode, store}) => {
   const [showCard, setShowCard] = useState(false);
   const [showNav, setShowNav] = useState(false);
 
   return (<>
         <header className='relative'>
           <div className="lg:absolute top-0  z-50 container mx-auto px-6 py-3">
-              <div className="flex items-center justify-between">
+              <div className=" relative flex items-center justify-between">
                   <div className="hidden w-full text-gray-600 md:flex md:items-center">
                       <img src={`${store.image}`} className='absolute top-2 left-2 ml-2 mt-2' style={{width:"200px"}}/>
                   </div>
                   <div className="flex w-full text-gray-600 md:hidden">
                      <label className='text-gray-700 text-medium'>{store.name}</label>
                   </div>
+                  {mode=="EDIT" &&
+                        <Link href={`/store`} className='mx-auto my-auto'>
+                        <AiOutlineEdit
+                        className="top-2 left-4 lg:top-10 sm:left-4 absolute inline rounded h-8 w-8 ml-20 bg-white"
+                        color="gray"
+                        />
+                    </Link>}
                   <div className="flex items-center justify-end w-full">
                       <button  className="text-gray-600 focus:outline-none mx-4 sm:mx-0" onClick={()=>{setShowCard(true)}}>
                           <svg className="h-5 w-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">

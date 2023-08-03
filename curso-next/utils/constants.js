@@ -19,3 +19,12 @@ export const CAROUSEL_SAVE_CONFIRM_ACTION = {message:"¿Seguro de guardar los ca
 export const CURRENCY_LIST = [{value:"CRC", label:"Colones", feSimbol:"₡"},{value:"USD", label:"Dólares", feSimbol:"$"}];
 export const CATEGORY_TYPES = [{value:"SELECT", label:"Seleccione un tipo de categoria"},{value:"PRIMARY", label:"Categoría Principal (Se muestra al inicio de la página)"},{value:"SECONDARY", label:"Categoria Secundaria"}];
 export const CATEGORY_DEFAULT_LIST = [{value:"SELECT", label:"Seleccione una categoria"}];
+export const STORE_BACKGROUND_DIRECTION = [
+        {value:"bbg-gradient-to-r", label:"Izquierda a Derecha"},
+        {value:"bbg-gradient-to-t", label:"Hacia arriba"},
+        {value:"bbg-gradient-to-tr", label:"De Arriba hacia Derecha"},
+        {value:"bbg-gradient-to-br", label:"Izquierda a Derecha"},
+        {value:"bbg-gradient-to-b", label:"De Abajo a Derecha"},
+        {value:"bbg-gradient-to-bl", label:"De Arriba a Izquierda"},
+        {value:"bbg-gradient-to-l", label:"Hacia la Izquierda"},
+        {value:"bbg-gradient-to-tl", label:"Hacia Arriba e Izquierda"}];
