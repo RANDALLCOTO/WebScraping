@@ -19,16 +19,16 @@ const Nav = () => {
   }, []);
 
   return (
-    <nav className="flex-between mb-16 pt-3 mr-4 ml-4">
+    <nav className="fixed top-0 w-full flex-between p-3 z-50 border-b border-gray-100 orange_gradient_nav">
       <Link href="/" className="flex gap-2 flex-center">
         <Image
-          src="/assets/images/logo.svg"
+          src="/assets/images/comparator-logo.png"
           alt="randal logo"
-          width={30}
-          height={30}
+          width={50}
+          height={60}
           className="object-contain"
         />
-        <p className="logo_text">Comparador de Precios CR</p>
+        <p className="text-medium font-bold text-black">Comparador de Precios</p>
       </Link>
       
       {/* Desktop navitation */}

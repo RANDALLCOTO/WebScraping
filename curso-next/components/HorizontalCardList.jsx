@@ -42,11 +42,11 @@ const HorizontalCardList = ({ companyProducts, companyName, companyLogo }) => {
 
 
   return (
-    <div className="flex bg-white mb-6 flex-col m-auto p-auto  relative">
+    <div className="flex bg-transparent mb-6 flex-col m-auto p-auto  relative">
       <div className="absolute right-3 bottom-3">
         <img src={companyLogo} alt="" width={150}/>
       </div>
-      <div className={`sm:flex hidden ${scrollToLeft?'lg:hidden':''} absolute top-1/2 z-40 left-3`}>
+      <div className={`sm:flex  ${scrollToLeft?'lg:hidden':''} absolute top-1/2 z-40 left-3`}>
         <button  className="rounded-full h-10 w-10 flex items-center justify-center bg-black"
           onMouseUp={() => {
             stopInterval();

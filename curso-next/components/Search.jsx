@@ -8,24 +8,28 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
 
   const setInternalData = (dataToSet) =>{
-    setData(oldArray => [...oldArray, dataToSet]);
+    dataToSet.forEach(element => {
+      setData(oldArray => [...oldArray, element]);
+    });
     console.log(data);
   }
   return (
-    <section className="w-full flex-center flex-col">
-        <h1 className="w-full mt-5 font-display text-4xl font-bold	text-center leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
-            Búscalo en sólo un lugar
-            <br />
+    <>
+      <section className="grid grid-cols-1 grid-rows-2 w-full">
+        <h1 className="flex w-full justify-center font-bold p-4">
+          <span className="orange_gradient text-center text-4xl lg:text-7xl ">Compara Elige Ahorra</span>
         </h1>
-        <p className="desc text-center mb-3">
-            Ingresa en el cuadro de texto el producto que deseas buscar.
-        </p>
-        <SearchButton onSetData={setInternalData} onRestartData = {setData} onSetLoading={setLoading}/>
-        <ProductList data={data} loading={loading}/>
-
-        
-    </section>
-  )
+        <div className="flex w-full justify-center">
+          <SearchButton 
+            onSetData={setInternalData}
+            onRestartData={setData}
+            onSetLoading={setLoading}
+          />
+        </div>
+      </section>
+      <ProductList data={data} loading={loading} />
+    </>
+  );
 }
 
 export default Search;
